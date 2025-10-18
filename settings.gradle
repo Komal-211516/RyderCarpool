@@ -1,4 +1,2 @@
-cat > settings.gradle << 'EOF'
-rootProject.name = "RyderCarpoolApp"
 include ':app'
-EOF
+rootProject.name = "RyderCarpool"

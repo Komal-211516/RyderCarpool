@@ -1,0 +1,17 @@
+R_DEF: Internal format may change without notice
+local
+id btnGoToSignup
+id btnLogin
+id buttonSignup
+id editTextEmail
+id editTextName
+id editTextPassword
+id loginButton
+id radioDriver
+id radioGroupUserType
+id radioPassenger
+id signupButton
+id titleText
+layout activity_login
+layout activity_main
+layout activity_signup
