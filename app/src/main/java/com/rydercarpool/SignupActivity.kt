@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
+import android.util.Patterns
 
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,9 +22,9 @@ class SignupActivity : AppCompatActivity() {
         
         buttonSignup.setOnClickListener {
             // Get user input
-            val name = editTextName.text.toString()
-            val email = editTextEmail.text.toString()
-            val password = editTextPassword.text.toString()
+            val name = editTextName.text.toString().trim()
+            val email = editTextEmail.text.toString().trim()
+            val password = editTextPassword.text.toString().trim()
             
             // Get selected user type
             val selectedUserTypeId = radioGroupUserType.checkedRadioButtonId
@@ -34,10 +35,8 @@ class SignupActivity : AppCompatActivity() {
                 R.id.radioPassenger -> userType = "Passenger"
             }
             
-            // Basic validation
-            if (name.isEmpty() || email.isEmpty() || password.isEmpty() || userType.isEmpty()) {
-                Toast.makeText(this, "Please fill all fields and select user type", Toast.LENGTH_SHORT).show()
-            } else {
+            // Enhanced validation
+            if (validateInputs(name, email, password, userType)) {
                 // Success - show confirmation and navigate back to login
                 Toast.makeText(this, "Signup successful! Welcome $name ($userType)", Toast.LENGTH_LONG).show()
                 
@@ -47,5 +46,39 @@ class SignupActivity : AppCompatActivity() {
                 finish() // Close signup activity
             }
         }
+    }
+    
+    private fun validateInputs(name: String, email: String, password: String, userType: String): Boolean {
+        if (name.isEmpty()) {
+            Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (email.isEmpty()) {
+            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (password.isEmpty()) {
+            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (password.length < 6) {
+            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        if (userType.isEmpty()) {
+            Toast.makeText(this, "Please select user type", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        
+        return true
     }
 }
