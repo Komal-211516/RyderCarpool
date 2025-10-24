@@ -5,80 +5,61 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.Toast
-import android.util.Patterns
 
 class SignupActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
-        
-        val buttonSignup = findViewById<Button>(R.id.buttonSignup)
+
+        // Find views using your EXACT IDs
         val editTextName = findViewById<EditText>(R.id.editTextName)
         val editTextEmail = findViewById<EditText>(R.id.editTextEmail)
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
         val radioGroupUserType = findViewById<RadioGroup>(R.id.radioGroupUserType)
-        
+        val buttonSignup = findViewById<Button>(R.id.buttonSignup)
+
+        // Set up click listener
         buttonSignup.setOnClickListener {
-            // Get user input
-            val name = editTextName.text.toString().trim()
-            val email = editTextEmail.text.toString().trim()
-            val password = editTextPassword.text.toString().trim()
-            
-            // Get selected user type
-            val selectedUserTypeId = radioGroupUserType.checkedRadioButtonId
-            var userType = ""
-            
-            when (selectedUserTypeId) {
-                R.id.radioDriver -> userType = "Driver"
-                R.id.radioPassenger -> userType = "Passenger"
-            }
-            
-            // Enhanced validation
-            if (validateInputs(name, email, password, userType)) {
-                // Success - show confirmation and navigate back to login
-                Toast.makeText(this, "Signup successful! Welcome $name ($userType)", Toast.LENGTH_LONG).show()
-                
-                // Navigate back to login screen
+            val name = editTextName.text.toString()
+            val email = editTextEmail.text.toString()
+            val password = editTextPassword.text.toString()
+            val selectedRadioId = radioGroupUserType.checkedRadioButtonId
+            val userType = if (selectedRadioId == R.id.radioDriver) "driver" else "passenger"
+
+            if (validateInput(name, email, password)) {
+                Toast.makeText(this, "Account created as $userType!", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                finish() // Close signup activity
+                finish()
             }
         }
     }
-    
-    private fun validateInputs(name: String, email: String, password: String, userType: String): Boolean {
+
+    private fun validateInput(name: String, email: String, password: String): Boolean {
         if (name.isEmpty()) {
-            Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Name is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        
+
         if (email.isEmpty()) {
-            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        
+
         if (password.isEmpty()) {
-            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
             return false
         }
-        
+
         if (password.length < 6) {
             Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
             return false
         }
-        
-        if (userType.isEmpty()) {
-            Toast.makeText(this, "Please select user type", Toast.LENGTH_SHORT).show()
-            return false
-        }
-        
+
         return true
     }
 }

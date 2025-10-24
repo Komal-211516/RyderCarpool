@@ -1,7 +1,6 @@
 package com.rydercarpool.models
 
 data class Rating(
-    val id: String = "",
     val rideId: String = "",
     val fromUserId: String = "",
     val toUserId: String = "",

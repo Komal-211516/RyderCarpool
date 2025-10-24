@@ -81,7 +81,7 @@ class GuardianAlertService : Service() {
                 println("Failed to send SMS: ${e.message}")
             }
         }
-    }
+    } // Added missing closing brace
 
     private fun startForegroundService() {
         val notification = NotificationCompat.Builder(this, "guardian_channel")
@@ -92,10 +92,15 @@ class GuardianAlertService : Service() {
             .build()
 
         startForeground(1, notification)
-    }
+    } // Added missing closing brace
+
+    // Remove these duplicate/placeholder functions or implement them properly:
+    // fun startLocationTracking() { } // DUPLICATE - REMOVE
+    // fun stopLocationTracking() { } // PLACEHOLDER - REMOVE OR IMPLEMENT
+    // fun sendAlertToGuardian() { } // PLACEHOLDER - REMOVE OR IMPLEMENT
 
     override fun onDestroy() {
         super.onDestroy()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-}mkdir
+}
