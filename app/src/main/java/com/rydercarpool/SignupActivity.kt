@@ -8,62 +8,76 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class SignupActivity : AppCompatActivity() {
+
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
+
+    private lateinit var editTextName: EditText
+    private lateinit var editTextEmail: EditText
+    private lateinit var editTextPassword: EditText
+    private lateinit var radioGroupUserType: RadioGroup
+    private lateinit var buttonSignup: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        val editTextName = findViewById<EditText?>(R.id.editTextName)
-        val editTextEmail = findViewById<EditText?>(R.id.editTextEmail)
-        val editTextPassword = findViewById<EditText?>(R.id.editTextPassword)
-        val radioGroupUserType = findViewById<RadioGroup?>(R.id.radioGroupUserType)
-        val buttonSignup = findViewById<Button?>(R.id.buttonSignup)
+        // Firebase
+        auth = Firebase.auth
+        db = FirebaseFirestore.getInstance()
 
-        buttonSignup?.setOnClickListener {
-            val name = editTextName?.text?.toString()?.trim().orEmpty()
-            val email = editTextEmail?.text?.toString()?.trim().orEmpty()
-            val password = editTextPassword?.text?.toString().orEmpty()
+        // Views
+        editTextName = findViewById(R.id.editTextName)
+        editTextEmail = findViewById(R.id.editTextEmail)
+        editTextPassword = findViewById(R.id.editTextPassword)
+        radioGroupUserType = findViewById(R.id.radioGroupUserType)
+        buttonSignup = findViewById(R.id.buttonSignup)
 
-            val selectedId = radioGroupUserType?.checkedRadioButtonId ?: -1
+        buttonSignup.setOnClickListener {
+            val name = editTextName.text.toString().trim()
+            val email = editTextEmail.text.toString().trim()
+            val password = editTextPassword.text.toString()
+
+            val selectedId = radioGroupUserType.checkedRadioButtonId
             val userType = when (selectedId) {
                 R.id.radioDriver -> "Driver"
                 R.id.radioPassenger -> "Passenger"
                 else -> ""
             }
 
-            if (validateInputs(name, email, password, userType)) {
-                Toast.makeText(this, "Signup successful! Welcome $name ($userType)", Toast.LENGTH_LONG).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            }
+            if (!validateInputs(name, email, password, userType)) return@setOnClickListener
+
+            signupUser(name, email, password, userType)
         }
     }
 
     private fun validateInputs(name: String, email: String, password: String, userType: String): Boolean {
         if (name.isBlank()) {
-            Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
+            editTextName.error = "Name required"
             return false
+        } else {
+            editTextName.error = null
         }
 
-        if (email.isBlank()) {
-            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+        if (email.isBlank() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editTextEmail.error = "Valid email required"
             return false
+        } else {
+            editTextEmail.error = null
         }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
+        if (password.isEmpty() || password.length < 6) {
+            editTextPassword.error = "Password must be at least 6 characters"
             return false
-        }
-
-        if (password.isEmpty()) {
-            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (password.length < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
-            return false
+        } else {
+            editTextPassword.error = null
         }
 
         if (userType.isEmpty()) {
@@ -73,81 +87,47 @@ class SignupActivity : AppCompatActivity() {
 
         return true
     }
-}
-```// filepath: /workspaces/RyderCarpool/app/src/main/java/com/rydercarpool/SignupActivity.kt
-package com.rydercarpool
 
-import android.content.Intent
-import android.os.Bundle
-import android.util.Patterns
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+    private fun signupUser(name: String, email: String, password: String, userType: String) {
+        // Disable button to prevent double clicks (optional)
+        buttonSignup.isEnabled = false
 
-class SignupActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
-
-        val editTextName = findViewById<EditText?>(R.id.editTextName)
-        val editTextEmail = findViewById<EditText?>(R.id.editTextEmail)
-        val editTextPassword = findViewById<EditText?>(R.id.editTextPassword)
-        val radioGroupUserType = findViewById<RadioGroup?>(R.id.radioGroupUserType)
-        val buttonSignup = findViewById<Button?>(R.id.buttonSignup)
-
-        buttonSignup?.setOnClickListener {
-            val name = editTextName?.text?.toString()?.trim().orEmpty()
-            val email = editTextEmail?.text?.toString()?.trim().orEmpty()
-            val password = editTextPassword?.text?.toString().orEmpty()
-
-            val selectedId = radioGroupUserType?.checkedRadioButtonId ?: -1
-            val userType = when (selectedId) {
-                R.id.radioDriver -> "Driver"
-                R.id.radioPassenger -> "Passenger"
-                else -> ""
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                buttonSignup.isEnabled = true
+                if (task.isSuccessful) {
+                    val userId = auth.currentUser?.uid ?: ""
+                    if (userId.isNotEmpty()) {
+                        saveUserToFirestore(userId, name, email, userType)
+                    } else {
+                        Toast.makeText(this, "Signup succeeded but user id missing", Toast.LENGTH_SHORT).show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, "Signup failed: ${task.exception?.message}", Toast.LENGTH_LONG).show()
+                }
             }
+    }
 
-            if (validateInputs(name, email, password, userType)) {
-                Toast.makeText(this, "Signup successful! Welcome $name ($userType)", Toast.LENGTH_LONG).show()
+    private fun saveUserToFirestore(userId: String, name: String, email: String, userType: String) {
+        val user = hashMapOf(
+            "userId" to userId,
+            "name" to name,
+            "email" to email,
+            "userType" to userType,
+            "createdAt" to Timestamp.now()
+        )
+
+        db.collection("users").document(userId)
+            .set(user)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show()
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
-        }
-    }
-
-    private fun validateInputs(name: String, email: String, password: String, userType: String): Boolean {
-        if (name.isBlank()) {
-            Toast.makeText(this, "Please enter your name", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (email.isBlank()) {
-            Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (password.isEmpty()) {
-            Toast.makeText(this, "Please enter a password", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (password.length < 6) {
-            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        if (userType.isEmpty()) {
-            Toast.makeText(this, "Please select user type", Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error saving user data: ${e.message}", Toast.LENGTH_LONG).show()
+            }
     }
 }
