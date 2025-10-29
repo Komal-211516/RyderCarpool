@@ -1,8 +1,11 @@
-import androidx.appcompat.app.AppCompatActivity
+// ...existing code...
+package com.rydercarpool
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.rydercarpool.activities.LiveLocationActivity
 import com.rydercarpool.activities.RatingActivity
 
@@ -12,29 +15,26 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize buttons
-        val loginButton = findViewById<Button>(R.id.loginButton)
-        val signupButton = findViewById<Button>(R.id.signupButton)
-        val safetyButton = findViewById<Button>(R.id.safetyButton)
-        
-        // Consolidated button finding
-        val startRideButton = findViewById<Button>(R.id.btnStartRide) ?: findViewById<Button>(R.id.start_ride_button)
-        val liveLocationButton = findViewById<Button>(R.id.btnLiveLocation) ?: findViewById<Button>(R.id.live_location_button)
-        val ratingsButton = findViewById<Button>(R.id.btnRatings) ?: findViewById<Button>(R.id.ratings_button)
+        // primary buttons (nullable — tolerate missing IDs)
+        val loginButton = findViewById<Button?>(R.id.loginButton)
+        val signupButton = findViewById<Button?>(R.id.signupButton)
+        val safetyButton = findViewById<Button?>(R.id.safetyButton)
 
-        // Set up click listeners
-        loginButton.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+        // alternative / consolidated IDs for additional features
+        val startRideButton = findViewById<Button?>(R.id.btnStartRide) ?: findViewById(R.id.start_ride_button)
+        val liveLocationButton = findViewById<Button?>(R.id.btnLiveLocation) ?: findViewById(R.id.live_location_button)
+        val ratingsButton = findViewById<Button?>(R.id.btnRatings) ?: findViewById(R.id.ratings_button)
+
+        loginButton?.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
-        signupButton.setOnClickListener {
-            val intent = Intent(this, SignupActivity::class.java)
-            startActivity(intent)
+        signupButton?.setOnClickListener {
+            startActivity(Intent(this, SignupActivity::class.java))
         }
 
-        safetyButton.setOnClickListener {
-            openSafetyFeatures()
+        safetyButton?.setOnClickListener {
+            startActivity(Intent(this, LiveLocationActivity::class.java))
         }
 
         startRideButton?.setOnClickListener {
@@ -42,23 +42,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         liveLocationButton?.setOnClickListener {
-            val intent = Intent(this, LiveLocationActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, LiveLocationActivity::class.java))
         }
 
         ratingsButton?.setOnClickListener {
-            val intent = Intent(this, RatingActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, RatingActivity::class.java))
         }
 
-        // If no buttons found, show a message
-        if (startRideButton == null && liveLocationButton == null && ratingsButton == null) {
-            Toast.makeText(this, "No buttons found in layout", Toast.LENGTH_LONG).show()
+        if (loginButton == null && signupButton == null && safetyButton == null
+            && startRideButton == null && liveLocationButton == null && ratingsButton == null) {
+            Toast.makeText(this, "No actionable views found in layout", Toast.LENGTH_LONG).show()
         }
-    }
-
-    private fun openSafetyFeatures() {
-        val intent = Intent(this, LiveLocationActivity::class.java)
-        startActivity(intent)
     }
 }

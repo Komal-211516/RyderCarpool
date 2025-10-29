@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
     android:background="@color/background">
+=======
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    android:background="@color/white"
+    android:fitsSystemWindows="true">
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,6 +39,7 @@
             android:textStyle="bold"
             android:textColor="@color/text_primary"
             android:layout_gravity="center_horizontal"
+<<<<<<< HEAD
             android:layout_marginBottom="8dp" />
 
         <TextView
@@ -40,6 +49,8 @@
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
             android:layout_gravity="center_horizontal"
+=======
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
             android:layout_marginBottom="32dp" />
 
         <!-- Email Input -->
@@ -49,8 +60,13 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
+<<<<<<< HEAD
             android:padding="16dp"
             android:layout_marginBottom="16dp"
+=======
+            android:layout_marginBottom="16dp"
+            android:padding="16dp"
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
             android:background="@drawable/edittext_background" />
 
         <!-- Password Input -->
@@ -60,8 +76,13 @@
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
+<<<<<<< HEAD
             android:padding="16dp"
             android:layout_marginBottom="24dp"
+=======
+            android:layout_marginBottom="24dp"
+            android:padding="16dp"
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
             android:background="@drawable/edittext_background" />
 
         <!-- Login Button -->
@@ -74,8 +95,12 @@
             android:textStyle="bold"
             android:background="@color/primary_color"
             android:textColor="@color/white"
+<<<<<<< HEAD
             android:layout_marginBottom="16dp"
             android:padding="16dp" />
+=======
+            android:layout_marginBottom="16dp" />
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
 
         <!-- Sign Up Button -->
         <Button
@@ -85,8 +110,15 @@
             android:text="Create New Account"
             android:textSize="14sp"
             android:background="@android:color/transparent"
+<<<<<<< HEAD
             android:textColor="@color/primary_color"
             android:padding="16dp" />
 
     </LinearLayout>
 </ScrollView>
+=======
+            android:textColor="@color/primary_color" />
+
+    </LinearLayout>
+</ScrollView>
+>>>>>>> 724ceb52fe35adbc7d294fc009d82b9243e67762
