@@ -7,3 +7,5 @@ local.properties
 .idea/
 .DS_Store
 *.log
+android-sdk/
+android-sdk/commandlinetools.zip
