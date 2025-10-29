@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "15489082543",
+    "project_id": "rydercarpool-f100e",
+    "storage_bucket": "rydercarpool-f100e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15489082543:android:dac7b7afbf2cc896eee05a",
+        "android_client_info": {
+          "package_name": "com.example.rydercarpool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOsbgTCexSyLa2-XWSKDMkHTY_DafiVts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
