@@ -9,3 +9,5 @@ local.properties
 *.log
 android-sdk/
 android-sdk/commandlinetools.zip
+android-sdk/
+android-sdk/commandlinetools.zip
