@@ -13,3 +13,5 @@ android-sdk/
 android-sdk/commandlinetools.zip
 android-sdk/
 android-sdk/
+google-services.json
+app/google-services.json
