@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rydercarpool">
+
+    <!-- Required Permissions for Core Features -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Optional Permissions for Future Features -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Ryder Carpool"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <!-- Main Launcher Activity -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Login Activity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+
+        <!-- Signup Activity -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+
+        <!-- Rating Activity -->
+        <activity
+            android:name=".activities.RatingActivity"
+            android:label="Rate Your Ride"
+            android:exported="false" />
+
+        <!-- Live Location Activity -->
+        <activity
+            android:name=".activities.LiveLocationActivity"
+            android:label="Safety Features"
+            android:exported="false" />
+
+        <!-- Book Ride Activity -->
+        <activity
+            android:name=".activities.BookRideActivity"
+            android:label="Book a Ride"
+            android:exported="false" />
+
+        <!-- Profile Activity -->
+        <activity
+            android:name=".activities.ProfileActivity"
+            android:label="My Profile"
+            android:exported="false" />
+
+        <!-- Guardian Alert Service -->
+        <service
+            android:name=".services.GuardianAlertService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Firebase Messaging Service (for future notifications) -->
+        <service
+            android:name=".services.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <!-- Notification Channels for Android 8.0+ -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+    </application>
+
+</manifest>

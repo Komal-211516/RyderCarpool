@@ -1,31 +1,33 @@
-// Create new: activities/ProfileActivity.kt
+package com.rydercarpool.activities
+
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
+import com.rydercarpool.databinding.ActivityProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+
 class ProfileActivity : AppCompatActivity() {
-    
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    
+
+    private lateinit var binding: ActivityProfileBinding
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-        
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
-        
-        loadUserProfile()
-    }
-    
-    private fun loadUserProfile() {
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         val userId = auth.currentUser?.uid ?: return
-        
-        db.collection("users").document(userId)
+
+        firestore.collection("users").document(userId)
             .get()
             .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    val user = document.toObject(User::class.java)
-                    // Display user data in UI
-                    findViewById<TextView>(R.id.tvUserName).text = user?.name ?: "No Name"
-                    findViewById<TextView>(R.id.tvUserEmail).text = user?.email ?: "No Email"
-                }
+                binding.tvUserName.text = document.getString("name") ?: "Unknown"
+                binding.tvUserEmail.text = document.getString("email") ?: "No email"
+            }
+            .addOnFailureListener {
+                binding.tvUserName.text = "Error loading user"
+                binding.tvUserEmail.text = ""
             }
     }
 }

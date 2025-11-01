@@ -1,12 +1,15 @@
 package com.rydercarpool.models
 
+import java.io.Serializable
+
 data class Ride(
-    val id: String = "",
-    val driverId: String = "",
-    val passengerId: String = "",
-    val pickupLocation: String = "",
-    val dropoffLocation: String = "",
-    val fare: Double = 0.0,
-    val status: String = "",
-    val timestamp: Long = 0L
-)
+    val rideId: String,
+    val pickupLocation: String,
+    val destination: String,
+    val fare: Double,
+    val rideDate: String,
+    val rideTime: String,
+    val driverName: String,
+    val vehicleModel: String,
+    val status: String
+) : Serializable

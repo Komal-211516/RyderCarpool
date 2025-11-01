@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enter your guardian's phone number with country code:"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editGuardianNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="+1234567890"
+        android:inputType="phone"
+        android:maxLines="1"
+        android:background="@drawable/edittext_background"
+        android:padding="16dp" />
+
+</LinearLayout>

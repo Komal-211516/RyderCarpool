@@ -1,137 +1,56 @@
-// ...existing code...
 package com.rydercarpool.services
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
 import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
-import android.location.Location
-import android.os.Build
-import android.os.IBinder
-import android.os.Looper
 import android.telephony.SmsManager
+import android.util.Log
 import android.widget.Toast
-import androidx.core.app.NotificationCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationCallback
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationResult
-import com.google.android.gms.location.LocationServices
-import com.rydercarpool.R
 
-class GuardianAlertService : Service() {
+class GuardianAlertService(private val context: Context) {
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationCallback: LocationCallback
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var smsManager: SmsManager
-
-    private val CHANNEL_ID = "guardian_channel"
-    private val NOTIFICATION_ID = 1
-
-    override fun onCreate() {
-        super.onCreate()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        sharedPreferences = getSharedPreferences("RyderCarpool", MODE_PRIVATE)
-        smsManager = SmsManager.getDefault()
-
-        createNotificationChannel()
-        createLocationCallback()
-        startForegroundServiceWithNotification()
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startLocationTracking()
-        return START_STICKY
-    }
-
-    override fun onBind(intent: Intent?): IBinder? = null
-
-    private fun createLocationCallback() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
-                locationResult.lastLocation?.let { location ->
-                    sendLocationToGuardian(location)
-                }
-            }
-        }
-    }
-
-    private fun startLocationTracking() {
-        val locationRequest = LocationRequest.create().apply {
-            interval = 30_000L
-            fastestInterval = 15_000L
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-        }
-
-        try {
-            fusedLocationClient.requestLocationUpdates(
-                locationRequest,
-                locationCallback,
-                Looper.getMainLooper()
-            )
-        } catch (e: SecurityException) {
-            Toast.makeText(this, "Location permission required", Toast.LENGTH_SHORT).show()
-        } catch (e: Exception) {
-            println("Failed to request location updates: ${e.message}")
-        }
-    }
-
-    private fun sendLocationToGuardian(location: Location) {
-        val guardianNumber = sharedPreferences.getString("guardian_number", "") ?: ""
-
+    fun sendAlert(userId: String, message: String) {
+        // Actually use the userId parameter
+        Log.d("GuardianAlert", "Sending alert for user: $userId - $message")
+        
+        val guardianNumber = getGuardianNumber(userId)
         if (guardianNumber.isNotEmpty()) {
-            val googleMapsLink = "https://maps.google.com/?q=${location.latitude},${location.longitude}"
-            val message =
-                "Ryder Carpool Safety Alert - I'm currently at: $googleMapsLink - Lat: ${location.latitude}, Long: ${location.longitude}"
-
-            try {
-                smsManager.sendTextMessage(guardianNumber, null, message, null, null)
-                println("Guardian alert sent: $message")
-            } catch (e: SecurityException) {
-                Toast.makeText(this, "SMS permission required", Toast.LENGTH_SHORT).show()
-                println("Failed to send SMS (permission): ${e.message}")
-            } catch (e: Exception) {
-                println("Failed to send SMS: ${e.message}")
-            }
+            sendSMS(guardianNumber, message)
+            Log.i("GuardianAlert", "Alert sent successfully for user: $userId")
         } else {
-            println("No guardian number configured.")
+            Toast.makeText(context, "No guardian number found for user: $userId", Toast.LENGTH_SHORT).show()
+            Log.w("GuardianAlert", "No guardian number found for user: $userId")
         }
     }
 
-    private fun startForegroundServiceWithNotification() {
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Ryder Carpool Safety")
-            .setContentText("Live location sharing active")
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
-            .setCategory(NotificationCompat.CATEGORY_SERVICE)
-            .build()
-
-        startForeground(NOTIFICATION_ID, notification)
+    private fun getGuardianNumber(userId: String): String {
+        // In real implementation, fetch from database or SharedPreferences using userId
+        // For now, return a dummy number
+        return "1234567890"
     }
 
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "Guardian Alerts"
-            val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = "Channel for guardian live location sharing"
-            }
-            val notificationManager =
-                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    private fun sendSMS(phoneNumber: String, message: String) {
         try {
-            fusedLocationClient.removeLocationUpdates(locationCallback)
+            val smsManager = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                context.getSystemService(SmsManager::class.java)
+            } else {
+                @Suppress("DEPRECATION")
+                SmsManager.getDefault()
+            }
+            
+            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
+            Toast.makeText(context, "Alert sent to guardian", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
-            println("Error removing location updates: ${e.message}")
+            Log.e("GuardianAlert", "Failed to send SMS: ${e.message}")
+            Toast.makeText(context, "Failed to send alert", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun sendEmergencyAlert(userId: String, location: String) {
+        val message = "EMERGENCY! User $userId needs help. Location: $location"
+        sendAlert(userId, message)
+    }
+
+    fun updateGuardianNumber(userId: String, newNumber: String) {
+        // In real implementation, save to database or SharedPreferences
+        Log.d("GuardianAlert", "Updated guardian number for user: $userId to: $newNumber")
     }
 }

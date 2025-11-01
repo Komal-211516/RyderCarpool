@@ -1,26 +1,30 @@
-// Create new: services/RideService.kt
+package com.rydercarpool.services
+
+import com.rydercarpool.models.Ride
+
 class RideService {
-    private val db = FirebaseFirestore.getInstance()
-    private val ridesCollection = db.collection("rides")
     
-    fun createRide(ride: Ride, onSuccess: () -> Unit, onFailure: (String) -> Unit) {
-        ridesCollection.document(ride.rideId)
-            .set(ride)
-            .addOnSuccessListener { onSuccess() }
-            .addOnFailureListener { e -> onFailure(e.message ?: "Unknown error") }
+    private val bookedRides = mutableListOf<Ride>()
+    
+    fun bookRide(ride: Ride): Boolean {
+        return try {
+            // Add the ride to the list (in real app, this would be a database operation)
+            bookedRides.add(ride)
+            true
+        } catch (e: Exception) {
+            false
+        }
     }
     
-    fun getAvailableRides(pickup: String, onSuccess: (List<Ride>) -> Unit, onFailure: (String) -> Unit) {
-        ridesCollection
-            .whereEqualTo("status", "available")
-            .whereEqualTo("pickupLocation", pickup)
-            .get()
-            .addOnSuccessListener { documents ->
-                val rides = documents.map { doc ->
-                    doc.toObject(Ride::class.java)
-                }
-                onSuccess(rides)
-            }
-            .addOnFailureListener { e -> onFailure(e.message ?: "Unknown error") }
+    fun getBookedRides(): List<Ride> {
+        return bookedRides.toList()
+    }
+    
+    fun cancelRide(rideId: String): Boolean {
+        val ride = bookedRides.find { it.rideId == rideId }
+        return ride?.let {
+            bookedRides.remove(it)
+            true
+        } ?: false
     }
 }

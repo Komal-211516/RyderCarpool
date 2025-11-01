@@ -1,26 +1,14 @@
-// Root-level build.gradle
-
-// Top-level buildscript (Used for older Gradle versions or specific configurations)
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     repositories {
         google()
         mavenCentral()
     }
     dependencies {
-        // Essential Android Gradle Plugin
-        classpath "com.android.tools.build:gradle:8.2.2"
-        // Kotlin Gradle Plugin
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10"
-        // Google/Firebase plugin
-        classpath "com.google.gms:google-services:4.4.0" 
+        classpath 'com.android.tools.build:gradle:8.5.2'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10'
+        classpath 'com.google.gms:google-services:4.4.2'
     }
-}
-
-// Modern Plugins declaration (Replaces dependencies in buildscript for AGP/Kotlin)
-plugins {
-    id 'com.android.application' version '8.2.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.9.10' apply false
-    id 'com.google.gms.google-services' version '4.4.0' apply false
 }
 
 allprojects {
@@ -30,7 +18,6 @@ allprojects {
     }
 }
 
-// Clean task (typically placed here or removed if using modern Gradle tasks)
-tasks.register('clean', Delete) {
+task clean(type: Delete) {
     delete rootProject.buildDir
 }
