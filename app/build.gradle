@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'  // For Firebase
+    id 'com.google.gms.google-services'  // For Firebase - removed duplicate
 }
 
 android {
-    namespace "com.rydercarpool"
+    namespace 'com.rydercarpool'  // Removed duplicate namespace
     compileSdk 34
 
     defaultConfig {
