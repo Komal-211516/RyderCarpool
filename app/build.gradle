@@ -1,11 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services'  // For Firebase
 }
 
 android {
-    namespace 'com.rydercarpool'
+    namespace "com.rydercarpool"
     compileSdk 34
 
     defaultConfig {
@@ -14,7 +14,10 @@ android {
         targetSdk 34
         versionCode 1
         versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    
     lint {
         abortOnError = false
         checkReleaseBuilds = false
@@ -27,10 +30,6 @@ android {
         }
     }
 
-    buildFeatures {
-        viewBinding true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -38,6 +37,10 @@ android {
 
     kotlinOptions {
         jvmTarget = '17'
+    }
+    
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -52,12 +55,18 @@ dependencies {
     // JSON + utilities
     implementation 'com.google.code.gson:gson:2.11.0'
 
-    // ✅ Firebase dependencies
-    implementation 'com.google.firebase:firebase-auth:23.0.0'
-    implementation 'com.google.firebase:firebase-database:21.0.0'
-    implementation 'com.google.firebase:firebase-storage:21.0.0'
-    implementation 'com.google.firebase:firebase-firestore:25.0.0'
+    // Firebase dependencies
+    implementation platform('com.google.firebase:firebase-bom:33.0.0')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 
-    // ✅ Location and Maps
+    // Location and Maps
     implementation 'com.google.android.gms:play-services-location:21.3.0'
+    
+    // Testing dependencies
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
