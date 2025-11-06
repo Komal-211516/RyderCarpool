@@ -67,4 +67,4 @@
         <service android:name=".services.GuardianAlertService" />
 
     </application>
-</manifest>// Sync timestamp
+</manifest>
