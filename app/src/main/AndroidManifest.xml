@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permissions for Guardian Alert System -->
+    <!-- Permissions (keep existing) -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
     <application
         android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:theme="@style/AppTheme"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RyderCarpool">
+        tools:targetApi="31">
 
-        <!-- Main Launcher Activity -->
+        <!-- LAUNCHER ACTIVITY -->
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,45 +30,79 @@
             </intent-filter>
         </activity>
 
-        <!-- Login Activity -->
-        <activity
-            android:name=".activities.LoginActivity"
-            android:exported="false" />
-
-        <!-- Signup Activity -->
+        <!-- Authentication Activities -->
         <activity
             android:name=".activities.SignupActivity"
             android:exported="false" />
 
-        <!-- Book Ride Activity -->
+        <!-- Main App Activities -->
+        <activity
+            android:name=".activities.DashboardActivity"
+            android:exported="false" />
+
+        <!-- Ride Management Activities -->
         <activity
             android:name=".activities.BookRideActivity"
             android:exported="false" />
 
-        <!-- Ride History Activity -->
+        <!-- ADD THIS LINE: BookingConfirmationActivity -->
         <activity
-            android:name=".activities.RideHistoryActivity"
+            android:name=".activities.BookingConfirmationActivity"
             android:exported="false" />
 
-        <!-- Live Location Activity -->
+        <activity
+            android:name=".activities.OfferRideActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.FindRideActivity"
+            android:exported="false" />
+
+        <!-- Ride Flow Activities -->
+        <activity
+            android:name=".activities.RidePostedActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.RideConfirmedActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.RideCompletionActivity"
+            android:exported="false" />
+
+        <!-- Tracking & Location Activities -->
+        <activity
+            android:name=".activities.RideTrackingActivity"
+            android:exported="false" />
+
         <activity
             android:name=".activities.LiveLocationActivity"
-            android:label="Safety Features"
             android:exported="false" />
 
-        <!-- Profile Activity -->
-        <activity
-            android:name=".activities.ProfileActivity"
-            android:exported="false" />
-
-        <!-- Rating Activity -->
+        <!-- Rating Activities -->
         <activity
             android:name=".activities.RatingActivity"
-            android:label="Rate Your Ride"
             android:exported="false" />
 
-        <!-- Guardian Alert Service -->
-        <service android:name=".services.GuardianAlertService" />
+        <activity
+            android:name=".activities.RateDriverActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".activities.RatePassengerActivity"
+            android:exported="false" />
+
+        <!-- Services -->
+        <service
+            android:name=".services.RideTrackingService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".services.GuardianAlertService"
+            android:enabled="true"
+            android:exported="false" />
 
     </application>
 </manifest>

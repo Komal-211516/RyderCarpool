@@ -1,22 +1,26 @@
 package com.rydercarpool.activities
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.RecyclerView
 import com.rydercarpool.R
 import com.rydercarpool.models.Ride
-import com.rydercarpool.services.RideService
 import java.text.SimpleDateFormat
 import java.util.*
 
 class BookRideActivity : AppCompatActivity() {
 
-    private lateinit var editPickup: EditText
-    private lateinit var editDestination: EditText
-    private lateinit var btnFindRide: Button
-    private lateinit var recyclerViewRides: RecyclerView
-    private lateinit var rideService: RideService
+    private lateinit var etFromLocation: EditText
+    private lateinit var etToLocation: EditText
+    private lateinit var tvSelectedDate: TextView
+    private lateinit var tvSelectedTime: TextView
+    private lateinit var etGuardianPhone: EditText
+    private lateinit var btnConfirmBooking: Button
+
+    private val calendar = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,83 +28,152 @@ class BookRideActivity : AppCompatActivity() {
 
         initializeViews()
         setupClickListeners()
-        
-        rideService = RideService()
     }
 
     private fun initializeViews() {
-        // Use the exact IDs from your layout
-        editPickup = findViewById(R.id.editPickup)
-        editDestination = findViewById(R.id.editDestination)
-        btnFindRide = findViewById(R.id.btnFindRide)
-        recyclerViewRides = findViewById(R.id.recyclerViewRides)
+        etFromLocation = findViewById(R.id.etFromLocation)
+        etToLocation = findViewById(R.id.etToLocation)
+        tvSelectedDate = findViewById(R.id.tvSelectedDate)
+        tvSelectedTime = findViewById(R.id.tvSelectedTime)
+        etGuardianPhone = findViewById(R.id.etGuardianPhone)
+        btnConfirmBooking = findViewById(R.id.btnConfirmBooking)
     }
 
     private fun setupClickListeners() {
-        btnFindRide.setOnClickListener {
-            findRide()
+        // Date picker
+        findViewById<LinearLayout>(R.id.btnSelectDate).setOnClickListener {
+            showDatePicker()
+        }
+
+        // Time picker
+        findViewById<LinearLayout>(R.id.btnSelectTime).setOnClickListener {
+            showTimePicker()
+        }
+
+        // Confirm booking
+        btnConfirmBooking.setOnClickListener {
+            confirmBooking()
         }
     }
 
-    private fun findRide() {
-        val pickupLocation = editPickup.text.toString().trim()
-        val destination = editDestination.text.toString().trim()
+    private fun showDatePicker() {
+        val datePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                updateDateDisplay()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePicker.show()
+    }
 
-        if (pickupLocation.isEmpty() || destination.isEmpty()) {
-            Toast.makeText(this, "Please enter both pickup and destination locations", Toast.LENGTH_SHORT).show()
+    private fun showTimePicker() {
+        val timePicker = TimePickerDialog(
+            this,
+            { _, hourOfDay, minute ->
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                calendar.set(Calendar.MINUTE, minute)
+                updateTimeDisplay()
+            },
+            calendar.get(Calendar.HOUR_OF_DAY),
+            calendar.get(Calendar.MINUTE),
+            false
+        )
+        timePicker.show()
+    }
+
+    private fun updateDateDisplay() {
+        val dateFormat = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
+        tvSelectedDate.text = dateFormat.format(calendar.time)
+        tvSelectedDate.setTextColor(resources.getColor(android.R.color.black))
+    }
+
+    private fun updateTimeDisplay() {
+        val timeFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        tvSelectedTime.text = timeFormat.format(calendar.time)
+        tvSelectedTime.setTextColor(resources.getColor(android.R.color.black))
+    }
+
+    private fun confirmBooking() {
+        val fromLocation = etFromLocation.text.toString().trim()
+        val toLocation = etToLocation.text.toString().trim()
+        val guardianPhone = etGuardianPhone.text.toString().trim()
+
+        // Validation
+        if (fromLocation.isEmpty()) {
+            etFromLocation.error = "Please enter pickup location"
             return
         }
 
-        // Calculate fare based on locations
-        val calculatedFare = calculateFare(pickupLocation, destination)
-        
-        // Show available rides or book directly
+        if (toLocation.isEmpty()) {
+            etToLocation.error = "Please enter destination"
+            return
+        }
+
+        if (guardianPhone.isEmpty()) {
+            etGuardianPhone.error = "Please enter guardian phone number"
+            return
+        }
+
+        if (tvSelectedDate.text.toString() == "Select date") {
+            Toast.makeText(this, "Please select date", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (tvSelectedTime.text.toString() == "Select time") {
+            Toast.makeText(this, "Please select time", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Create ride booking
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+
         val ride = Ride(
-            rideId = generateRideId(),
-            pickupLocation = pickupLocation,
-            destination = destination,
-            fare = calculatedFare,
-            rideDate = getCurrentDate(),
-            rideTime = getCurrentTime(),
-            driverName = "Available Driver",
-            vehicleModel = "Standard Vehicle",
-            status = "Searching"
+            id = UUID.randomUUID().toString(),
+            fromLocation = fromLocation,
+            toLocation = toLocation,
+            date = dateFormat.format(calendar.time),
+            time = timeFormat.format(calendar.time),
+            availableSeats = 1,
+            price = calculatePrice(fromLocation, toLocation),
+            driverName = "To be assigned",
+            driverRating = 0.0,
+            totalRatings = 0,
+            guardianPhone = guardianPhone,
+            rideType = "Standard"
         )
 
-        val bookingResult = rideService.bookRide(ride)
-        
-        if (bookingResult) {
-            Toast.makeText(this, "Ride found! Fare: $${"%.2f".format(calculatedFare)}", Toast.LENGTH_LONG).show()
-            // You can show available rides in recyclerViewRides here
-            clearForm()
-        } else {
-            Toast.makeText(this, "No rides available. Please try again.", Toast.LENGTH_SHORT).show()
+        // Process the booking and navigate
+        processBooking(ride)
+    }
+
+    private fun calculatePrice(from: String, to: String): Double {
+        // Simple price calculation - replace with your logic
+        return when {
+            from.contains("meerpet", ignoreCase = true) && to.contains("jillaguida", ignoreCase = true) -> 150.0
+            else -> 25.0
         }
     }
 
-    private fun calculateFare(pickup: String, destination: String): Double {
-        // Simple fare calculation
-        val baseFare = 5.0
-        val distanceFare = (pickup.length + destination.length) * 0.5
-        return baseFare + distanceFare
-    }
+    private fun processBooking(ride: Ride) {
+        // Show confirmation message
+        Toast.makeText(this, "Booking confirmed!", Toast.LENGTH_SHORT).show()
 
-    private fun clearForm() {
-        editPickup.text.clear()
-        editDestination.text.clear()
-    }
+        // Navigate to Booking Confirmation Activity
+        val intent = Intent(this, BookingConfirmationActivity::class.java).apply {
+            putExtra("ride", ride)
+            putExtra("booking_id", UUID.randomUUID().toString())
+            putExtra("booking_time", SimpleDateFormat("MMM dd, yyyy hh:mm a", Locale.getDefault()).format(Date()))
+        }
+        startActivity(intent)
 
-    private fun getCurrentDate(): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return sdf.format(Date())
-    }
-
-    private fun getCurrentTime(): String {
-        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
-        return sdf.format(Date())
-    }
-
-    private fun generateRideId(): String {
-        return "RIDE_${System.currentTimeMillis()}"
+        // Optional: Finish current activity so user can't go back
+        finish()
     }
 }

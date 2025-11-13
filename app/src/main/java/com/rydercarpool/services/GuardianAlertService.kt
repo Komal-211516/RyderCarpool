@@ -1,56 +1,37 @@
 package com.rydercarpool.services
 
-import android.content.Context
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
 import android.telephony.SmsManager
-import android.util.Log
 import android.widget.Toast
 
-class GuardianAlertService(private val context: Context) {
+class GuardianAlertService : Service() {
 
-    fun sendAlert(userId: String, message: String) {
-        // Actually use the userId parameter
-        Log.d("GuardianAlert", "Sending alert for user: $userId - $message")
-        
-        val guardianNumber = getGuardianNumber(userId)
-        if (guardianNumber.isNotEmpty()) {
-            sendSMS(guardianNumber, message)
-            Log.i("GuardianAlert", "Alert sent successfully for user: $userId")
-        } else {
-            Toast.makeText(context, "No guardian number found for user: $userId", Toast.LENGTH_SHORT).show()
-            Log.w("GuardianAlert", "No guardian number found for user: $userId")
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val guardianPhone = intent?.getStringExtra("guardian_phone")
+        val passengerName = intent?.getStringExtra("passenger_name") ?: "User"
+
+        if (guardianPhone != null) {
+            sendSMSAlert(guardianPhone, passengerName)
         }
+
+        stopSelf()
+        return START_NOT_STICKY
     }
 
-    private fun getGuardianNumber(userId: String): String {
-        // In real implementation, fetch from database or SharedPreferences using userId
-        // For now, return a dummy number
-        return "1234567890"
-    }
-
-    private fun sendSMS(phoneNumber: String, message: String) {
+    private fun sendSMSAlert(guardianPhone: String, passengerName: String) {
         try {
-            val smsManager = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
-                context.getSystemService(SmsManager::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                SmsManager.getDefault()
-            }
-            
-            smsManager.sendTextMessage(phoneNumber, null, message, null, null)
-            Toast.makeText(context, "Alert sent to guardian", Toast.LENGTH_SHORT).show()
+            val smsManager: SmsManager = SmsManager.getDefault()
+            val message = "ALERT: $passengerName's ride is delayed beyond estimated time. Please check on them."
+
+            smsManager.sendTextMessage(guardianPhone, null, message, null, null)
+
+            Toast.makeText(this, "Guardian alert sent!", Toast.LENGTH_LONG).show()
         } catch (e: Exception) {
-            Log.e("GuardianAlert", "Failed to send SMS: ${e.message}")
-            Toast.makeText(context, "Failed to send alert", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to send alert: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-    fun sendEmergencyAlert(userId: String, location: String) {
-        val message = "EMERGENCY! User $userId needs help. Location: $location"
-        sendAlert(userId, message)
-    }
-
-    fun updateGuardianNumber(userId: String, newNumber: String) {
-        // In real implementation, save to database or SharedPreferences
-        Log.d("GuardianAlert", "Updated guardian number for user: $userId to: $newNumber")
-    }
+    override fun onBind(intent: Intent?): IBinder? = null
 }

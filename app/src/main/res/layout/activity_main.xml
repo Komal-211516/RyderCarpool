@@ -1,32 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@android:color/white"
+    tools:context=".activities.MainActivity">
 
+    <!-- App Logo/Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🚗 Ryder Carpool"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="#FF4A90E2"
+        android:layout_marginBottom="40dp" />
+
+    <!-- Welcome Message -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share Rides, Save Costs"
+        android:textSize="18sp"
+        android:textColor="#FF888888"
+        android:layout_marginBottom="60dp" />
+
+    <!-- Login Button -->
     <Button
-        android:id="@+id/btnBookRide"
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Book Ride"
-        android:layout_marginBottom="16dp"
-        android:textSize="18sp" />
+        android:text="Login"
+        android:textSize="16sp"
+        android:backgroundTint="#FF4A90E2"
+        android:textColor="@android:color/white"
+        android:padding="16dp"
+        android:layout_marginBottom="16dp" />
 
+    <!-- Sign Up Button -->
     <Button
-        android:id="@+id/btnRideHistory"
+        android:id="@+id/btnSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ride History"
-        android:layout_marginBottom="16dp"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/btnProfile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="18sp" />
+        android:text="Sign Up"
+        android:textSize="16sp"
+        android:backgroundTint="#FF50C878"
+        android:textColor="@android:color/white"
+        android:padding="16dp" />
 
 </LinearLayout>

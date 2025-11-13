@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_margin="8dp">
+
+    <!-- Route and Price -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvLocations"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📍 New York → Boston"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$25.50"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#4CAF50" />
+
+    </LinearLayout>
+
+    <!-- Date and Time -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="📅 Nov 15, 2025"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⏰ 10:00 AM"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Driver and Rating -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvDriver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="👤 John Smith"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="⭐ 4.5 (120)"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Seats and Ride Type -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvSeats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="💺 3 seats available"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvRideType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Standard"
+            android:background="#E3F2FD"
+            android:textColor="#1976D2"
+            android:padding="8dp"
+            android:textSize="12sp"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+</LinearLayout>

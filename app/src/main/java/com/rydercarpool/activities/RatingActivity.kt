@@ -1,25 +1,27 @@
 package com.rydercarpool.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
-import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.rydercarpool.R
-import com.rydercarpool.models.Rating
 
 class RatingActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
-    private lateinit var ratingBar: RatingBar
-    private lateinit var etComment: EditText
-    private lateinit var btnSubmitRating: Button
+    private lateinit var firestore: FirebaseFirestore
     private lateinit var tvRateUser: TextView
+    private lateinit var ratingBar: RatingBar
+    private lateinit var btnSubmit: Button
+
+    private var toUserId: String = ""
+    private var toUserName: String = ""
+    private var userType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,65 +29,77 @@ class RatingActivity : AppCompatActivity() {
 
         // Initialize Firebase
         auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
-        ratingBar = findViewById(R.id.ratingBar)
-        etComment = findViewById(R.id.etComment)
-        btnSubmitRating = findViewById(R.id.btnSubmitRating)
+        // Get data from intent
+        toUserId = intent.getStringExtra("toUserId") ?: ""
+        toUserName = intent.getStringExtra("toUserName") ?: "User"
+        userType = intent.getStringExtra("userType") ?: "driver"
+
+        initializeViews()
+        setupClickListeners()
+    }
+
+    private fun initializeViews() {
         tvRateUser = findViewById(R.id.tvRateUser)
+        ratingBar = findViewById(R.id.ratingBar)
+        btnSubmit = findViewById(R.id.btnSubmit)
 
-        val rideId = intent.getStringExtra("ride_id") ?: ""
-        val otherUserName = intent.getStringExtra("other_user_name") ?: "User"
-        val otherUserId = intent.getStringExtra("other_user_id") ?: ""
-        val userType = intent.getStringExtra("user_type") ?: ""
+        tvRateUser.text = "Rate $toUserName"
+    }
 
-        tvRateUser.text = "Rate $otherUserName"
-        
-        btnSubmitRating.setOnClickListener {
-            submitRating(rideId, otherUserId, userType, otherUserName)
+    private fun setupClickListeners() {
+        btnSubmit.setOnClickListener {
+            submitRating()
         }
     }
 
-    private fun submitRating(rideId: String, otherUserId: String, userType: String, otherUserName: String) {
-        val ratingValue = ratingBar.rating
-        val comment = etComment.text.toString().trim()
-
-        if (ratingValue == 0f) {
-            Toast.makeText(this, "Please provide a rating", Toast.LENGTH_SHORT).show()
-            return
-        }
-
+    private fun submitRating() {
         val currentUser = auth.currentUser
         if (currentUser == null) {
             Toast.makeText(this, "Please login to submit rating", Toast.LENGTH_SHORT).show()
             return
         }
 
+        val ratingValue = ratingBar.rating
+        if (ratingValue == 0f) {
+            Toast.makeText(this, "Please select a rating", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Create rating object
         val rating = Rating(
-            ratingId = System.currentTimeMillis().toString(),
-            rideId = rideId,
+            ratingId = firestore.collection("ratings").document().id,
             fromUserId = currentUser.uid,
-            fromUserName = currentUser.email ?: "Anonymous",
-            toUserId = otherUserId,
-            toUserName = otherUserName,
-            rating = ratingValue.toDouble(),
-            comment = comment,
+            fromUserName = currentUser.displayName ?: "Anonymous User",
+            toUserId = toUserId,
+            toUserName = toUserName,
+            rating = ratingValue,
             userType = userType,
-            timestamp = com.google.firebase.Timestamp.now()
+            timestamp = Timestamp.now()
         )
 
-        saveRating(rating)
-    }
-
-    private fun saveRating(rating: Rating) {
-        db.collection("ratings").document(rating.ratingId)
+        // Save to Firestore
+        firestore.collection("ratings")
+            .document(rating.ratingId)
             .set(rating)
             .addOnSuccessListener {
-                Toast.makeText(this, "Rating submitted successfully! ✅", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Rating submitted successfully!", Toast.LENGTH_SHORT).show()
                 finish()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Failed to submit rating: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+
+    data class Rating(
+        val ratingId: String = "",
+        val fromUserId: String = "",
+        val fromUserName: String = "",
+        val toUserId: String = "",
+        val toUserName: String = "",
+        val rating: Float = 0f,
+        val userType: String = "",
+        val timestamp: Timestamp = Timestamp.now()
+    )
 }

@@ -1,0 +1,28 @@
+package com.rydercarpool.activities
+
+import android.content.Intent
+import android.os.Bundle
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import com.rydercarpool.R
+
+class RoleSelectionActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_role_selection)
+
+        val btnBookRide = findViewById<Button>(R.id.btnBookRide)
+        val btnBeDriver = findViewById<Button>(R.id.btnBeDriver)
+
+        btnBookRide.setOnClickListener {
+            val intent = Intent(this, BookRideActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnBeDriver.setOnClickListener {
+            val intent = Intent(this, OfferRideActivity::class.java)
+            startActivity(intent)
+        }
+    }
+}

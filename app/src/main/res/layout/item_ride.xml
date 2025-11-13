@@ -1,62 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@android:color/white"
-    android:padding="16dp"
     android:layout_margin="8dp"
-    android:elevation="4dp">
-
-    <TextView
-        android:id="@+id/tvDriver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Driver: Available Driver"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginBottom="8dp" />
-
-    <TextView
-        android:id="@+id/tvPickup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="From: Location"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
-
-    <TextView
-        android:id="@+id/tvDestination"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="To: Destination"
-        android:textSize="14sp"
-        android:layout_marginBottom="8dp" />
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- Location Info -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tvFromLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="From Location"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="→"
+                android:textSize="16sp"
+                android:layout_marginHorizontal="8dp"
+                android:textColor="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tvToLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="To Location"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:textColor="@color/text_primary" />
+
+        </LinearLayout>
+
+        <!-- Date and Time -->
         <TextView
-            android:id="@+id/tvFare"
-            android:layout_width="0dp"
+            android:id="@+id/tvDateTime"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Fare: $15.00"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/primary_color" />
+            android:text="Date &amp; Time"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="4dp" />
 
-        <Button
-            android:id="@+id/btnBook"
-            android:layout_width="wrap_content"
+        <!-- Driver Info -->
+        <TextView
+            android:id="@+id/tvDriverName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Book Now"
-            android:background="@color/primary_color"
+            android:text="Driver Name"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Rating -->
+        <TextView
+            android:id="@+id/tvRating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rating"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Seats and Price -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/tvSeats"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Seats Available"
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="$0.00"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary_color" />
+
+        </LinearLayout>
+
+        <!-- Book Button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnBook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Book This Ride"
+            android:layout_marginTop="12dp"
+            app:backgroundTint="@color/primary_color"
             android:textColor="@color/white" />
 
     </LinearLayout>
 
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>

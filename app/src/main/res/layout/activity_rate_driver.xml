@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rate Driver"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- User Name -->
+    <TextView
+        android:id="@+id/tvUserName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driver Name"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <!-- User Type -->
+    <TextView
+        android:id="@+id/tvUserType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Driver"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Ride Details -->
+    <TextView
+        android:id="@+id/tvRideDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ride from A to B"
+        android:textSize="14sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Rating Bar -->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:numStars="5"
+        android:stepSize="1"
+        android:rating="5"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Rating Description -->
+    <TextView
+        android:id="@+id/tvRatingDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How was your ride?"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Comments -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:boxStrokeColor="@color/primary_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:hint="Comments (Optional)"
+            android:gravity="top"
+            android:background="@drawable/edittext_background" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Submit Rating Button -->
+    <Button
+        android:id="@+id/btnSubmitRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Rating"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_color"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Skip Button -->
+    <Button
+        android:id="@+id/btnSkip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skip"
+        android:textColor="@color/primary_color"
+        android:backgroundTint="@color/white"
+        style="@style/Button.Outlined" />
+
+</LinearLayout>

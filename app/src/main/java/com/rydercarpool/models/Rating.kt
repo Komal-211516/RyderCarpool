@@ -1,5 +1,7 @@
 package com.rydercarpool.models
 
+import com.google.firebase.Timestamp
+
 data class Rating(
     val ratingId: String = "",
     val rideId: String = "",
@@ -7,8 +9,8 @@ data class Rating(
     val fromUserName: String = "",
     val toUserId: String = "",
     val toUserName: String = "",
-    val rating: Double = 0.0,
+    val rating: Float = 0f,
     val comment: String = "",
-    val userType: String = "", // "driver" or "passenger"
-    val timestamp: com.google.firebase.Timestamp = com.google.firebase.Timestamp.now()
+    val userType: String = "",
+    val timestamp: Timestamp? = null
 )

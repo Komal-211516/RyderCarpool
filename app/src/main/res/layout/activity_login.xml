@@ -1,92 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:background="@color/background">
+    android:padding="16dp"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:orientation="vertical">
 
-        <!-- App Title -->
+        <!-- Car placeholder -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🚗 Ryder Carpool"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary_color"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="40dp" />
+            android:text="🚗"
+            android:textSize="40sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp" />
 
-        <!-- Welcome Message -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Welcome Back"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:textColor="@color/text_primary"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp" />
+            android:gravity="center"
+            android:layout_marginBottom="32dp"
+            android:textColor="@color/primary" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign in to continue your journey"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="32dp" />
-
-        <!-- Email Input -->
-        <EditText
-            android:id="@+id/editTextEmail"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/edittext_background" />
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/primary">
 
-        <!-- Password Input -->
-        <EditText
-            android:id="@+id/editTextPassword"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="16dp"
             android:layout_marginBottom="24dp"
-            android:background="@drawable/edittext_background" />
+            app:boxBackgroundColor="@color/white"
+            app:boxStrokeColor="@color/primary">
 
-        <!-- Login Button -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Login"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:background="@color/primary_color"
-            android:textColor="@color/white"
+            android:textSize="18sp"
             android:layout_marginBottom="16dp"
-            android:padding="16dp" />
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/white" />
 
-        <!-- Sign Up Button -->
         <TextView
-            android:id="@+id/btnGoToSignup"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvSignUpRedirect"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Don't have an account? Sign Up"
-            android:textColor="@color/primary_color"
-            android:textStyle="bold"
-            android:padding="16dp"
-            android:layout_gravity="center_horizontal" />
+            android:gravity="center"
+            android:textColor="@color/primary"
+            android:clickable="true"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="center"
+            android:textColor="@color/red"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
 
     </LinearLayout>
+
 </ScrollView>

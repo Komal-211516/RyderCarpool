@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    android:gravity="center">
+
+    <!-- Completion Message -->
+    <TextView
+        android:id="@+id/tvCompletionMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ride Completed Successfully!"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Completion Details -->
+    <TextView
+        android:id="@+id/tvCompletionDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Thank you for using Ryder Carpool"
+        android:textSize="16sp"
+        android:textColor="@color/gray"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Go Home Button -->
+    <Button
+        android:id="@+id/btnGoHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go to Home"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/primary_color"
+        android:layout_marginBottom="8dp" />
+
+    <!-- View History Button -->
+    <Button
+        android:id="@+id/btnViewHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Ride History"
+        android:textColor="@color/primary_color"
+        android:backgroundTint="@color/white"
+        android:layout_marginBottom="8dp"
+        style="@style/Button.Outlined" />
+
+    <!-- Book Another Button -->
+    <Button
+        android:id="@+id/btnBookAnother"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Book Another Ride"
+        android:textColor="@color/primary_color"
+        android:backgroundTint="@color/white"
+        style="@style/Button.Outlined" />
+
+</LinearLayout>

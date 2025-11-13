@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="@color/background_light">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ryder Carpool"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="80dp"
+        android:textColor="@color/primary" />
+
+    <!-- Book a Ride Button -->
+    <Button
+        android:id="@+id/btnBookRide"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:text="Book a Ride"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:drawableTop="@drawable/ic_person"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"
+        style="@style/Button.Filled" />
+
+    <!-- Be the Driver Button -->
+    <Button
+        android:id="@+id/btnBeDriver"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:text="Be the Driver"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:drawableTop="@drawable/ic_driver"
+        android:drawablePadding="8dp"
+        android:gravity="center"
+        android:layout_marginBottom="40dp"
+        style="@style/Button.Outlined" />
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        style="@style/Button.Outlined" />
+
+</LinearLayout>

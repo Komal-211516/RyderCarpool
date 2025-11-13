@@ -1,90 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:background="@color/background">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tvRateUser"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Rate User"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="32dp" />
 
-        <TextView
-            android:id="@+id/tvRateUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rate Your Ride"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="32dp" />
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:rating="0" />
 
-        <!-- Rating Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:elevation="4dp">
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit Rating"
+        android:background="@color/design_default_color_primary"
+        android:textColor="@android:color/white" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp"
-                android:background="@android:color/white">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="How was your ride?"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="24dp" />
-
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:numStars="5"
-                    android:stepSize="1.0"
-                    android:rating="0"
-                    android:layout_marginBottom="24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Add a comment (optional)"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="8dp" />
-
-                <EditText
-                    android:id="@+id/etComment"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:hint="Tell us about your experience..."
-                    android:gravity="top"
-                    android:inputType="textMultiLine"
-                    android:background="@drawable/edittext_background"
-                    android:padding="16dp" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <Button
-            android:id="@+id/btnSubmitRating"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit Rating"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:background="@color/primary_color"
-            android:textColor="@color/white"
-            android:padding="16dp" />
-
-    </LinearLayout>
-
-</ScrollView>
+</LinearLayout>
